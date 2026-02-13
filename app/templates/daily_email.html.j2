@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>German Daily Learning</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: #f3f5f7;
+        font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
+        color: #1a1f24;
+      }
+      .wrapper {
+        max-width: 760px;
+        margin: 24px auto;
+        background: #ffffff;
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid #dde3ea;
+      }
+      .hero {
+        padding: 28px;
+        background: linear-gradient(120deg, #fef4d7, #d7ecff);
+      }
+      .hero h1 {
+        margin: 0 0 8px;
+        font-size: 26px;
+      }
+      .hero p {
+        margin: 0;
+        color: #425466;
+      }
+      .section {
+        padding: 24px 28px;
+        border-top: 1px solid #edf2f7;
+      }
+      .section h2 {
+        margin: 0 0 12px;
+        font-size: 20px;
+      }
+      .news {
+        line-height: 1.8;
+        font-size: 16px;
+      }
+      .translation {
+        line-height: 1.8;
+        font-size: 15px;
+        background: #fafcff;
+        border: 1px solid #e6eef8;
+        border-radius: 10px;
+        padding: 14px;
+      }
+      .word-card {
+        border: 1px solid #e7ecf2;
+        border-radius: 10px;
+        padding: 12px;
+        margin-bottom: 12px;
+        background: #fcfdff;
+      }
+      .word-card h3 {
+        margin: 0 0 8px;
+        font-size: 18px;
+      }
+      .meta {
+        color: #637282;
+        font-size: 13px;
+      }
+      .badge {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 999px;
+        font-size: 12px;
+        border: 1px solid #ccd7e5;
+        background: #f4f8fc;
+      }
+      .footer {
+        padding: 20px 28px;
+        color: #6b7785;
+        font-size: 12px;
+        background: #f8fbff;
+      }
+      a.button {
+        display: inline-block;
+        padding: 9px 14px;
+        border-radius: 8px;
+        text-decoration: none;
+        margin-right: 8px;
+        margin-top: 6px;
+        font-size: 13px;
+        border: 1px solid #c9d8eb;
+        color: #17324d;
+        background: #eef6ff;
+      }
+      .source a {
+        color: #185ba5;
+      }
+      .hint {
+        background: #fff7e6;
+        border: 1px solid #ffdf9d;
+        color: #7a5900;
+        padding: 10px 12px;
+        border-radius: 8px;
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="hero">
+        <h1>Deutsch Daily News</h1>
+        <p>{{ today }} · Niveau {{ lesson.cefr_level }} · 1 News + 5 Worter + 1 Grammatik</p>
+      </div>
+
+      <div class="section">
+        <h2>{{ lesson.title }}</h2>
+        <div class="news">{{ lesson.news_text }}</div>
+      </div>
+
+      <div class="section">
+        <h2>全文中文翻译</h2>
+        <div class="translation">{{ lesson.chinese_translation }}</div>
+      </div>
+
+      <div class="section">
+        <h2>重点词汇 (5)</h2>
+        <p class="hint">点击按钮后会打开邮件草稿，发送后系统会自动更新 GitHub 里的词汇掌握库。</p>
+        {% for card in word_cards %}
+        <div class="word-card">
+          <h3>{{ card.word.word }} <span class="badge">{{ card.word.part_of_speech }}</span></h3>
+          <p><strong>释义(德):</strong> {{ card.word.explanation }}</p>
+          <p><strong>词源:</strong> {{ card.word.etymology }}</p>
+          <p><strong>构词:</strong> {{ card.word.morphology }}</p>
+          <p><strong>时态/变位:</strong> {{ card.word.tense_or_inflection }}</p>
+          <p><strong>英/中:</strong> {{ card.word.translation_en }} / {{ card.word.translation_zh }}</p>
+          <p><strong>例句:</strong> {{ card.word.example_sentence_de }}</p>
+          <p class="meta">当前掌握度: {{ card.mastery_label }}</p>
+          <a class="button" href="{{ card.links.unknown }}">完全不懂</a>
+          <a class="button" href="{{ card.links.fuzzy }}">隐约懂点</a>
+          <a class="button" href="{{ card.links.known }}">熟悉</a>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="section">
+        <h2>今日语法</h2>
+        <p><strong>主题:</strong> {{ lesson.grammar_point.topic }}</p>
+        <p><strong>原句:</strong> {{ lesson.grammar_point.source_sentence }}</p>
+        <p><strong>中文说明:</strong> {{ lesson.grammar_point.explanation_zh }}</p>
+        <p><strong>补充例句:</strong> {{ lesson.grammar_point.example_de }}</p>
+        <p class="meta">已掌握: {{ lesson.grammar_point.mastered }}</p>
+        <a class="button" href="{{ grammar_master_link }}">我已掌握这个语法</a>
+      </div>
+
+      <div class="section">
+        <h2>音频</h2>
+        {% if audio_url %}
+        <p><a class="button" href="{{ audio_url }}">播放/下载 MP3</a></p>
+        {% else %}
+        <p>本次音频已作为邮件附件发送。</p>
+        {% endif %}
+      </div>
+
+      <div class="section source">
+        <h2>新闻来源</h2>
+        {% for url in lesson.source_urls %}
+        <p><a href="{{ url }}">{{ url }}</a></p>
+        {% endfor %}
+      </div>
+
+      <div class="footer">
+        Daily learning pipeline generated by GitHub Actions.
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+.env
+.pytest_cache/
+.mypy_cache/
+.DS_Store
+
+data/audio/*.mp3
+data/logs/*.html
+
+# Keep progress JSON under version control
+!data/progress/*.json

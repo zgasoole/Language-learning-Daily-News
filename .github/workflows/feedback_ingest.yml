@@ -1,0 +1,53 @@
+name: Ingest Learning Feedback
+
+on:
+  schedule:
+    # Every 30 minutes
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  ingest-feedback:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Ingest feedback emails
+        env:
+          IMAP_HOST: ${{ secrets.IMAP_HOST || 'imap.gmail.com' }}
+          IMAP_PORT: ${{ secrets.IMAP_PORT || '993' }}
+          IMAP_USER: ${{ secrets.IMAP_USER }}
+          IMAP_PASSWORD: ${{ secrets.IMAP_PASSWORD }}
+          FEEDBACK_SUBJECT_PREFIX: ${{ secrets.FEEDBACK_SUBJECT_PREFIX || '[LLDN]' }}
+          FEEDBACK_TOKEN: ${{ secrets.FEEDBACK_TOKEN }}
+          FEEDBACK_ALLOWED_SENDERS: ${{ secrets.FEEDBACK_ALLOWED_SENDERS }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+        run: |
+          python -m app.main --feedback-only
+
+      - name: Commit progress snapshots
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/progress/*.json || true
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: ingest learning feedback"
+            git push
+          else
+            echo "No progress file changes"
+          fi
