@@ -61,6 +61,7 @@ Optional:
 - `EDGE_TTS_VOICE`
 - `FEEDBACK_ALLOWED_SENDERS`
 - `DE_RSS_URLS`
+- `TTS_STRICT` (`1` means audio failure will fail the whole job, default `0`)
 
 ## Workflows
 - `daily_news_mail.yml`: daily lesson email
@@ -69,6 +70,7 @@ Optional:
 
 ## Notes
 - If you previously set `GEMINI_MODEL=gemini-1.5-flash`, remove or update it.
+- `edge-tts` is now pinned to `7.2.7` to match current service protocol changes.
 - German is fully wired for V1.
 - French/Japanese language packs are pre-created as extension points.
 - Japanese TTS provider can be swapped later without changing pipeline structure.

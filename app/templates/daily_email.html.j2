@@ -157,8 +157,10 @@
         <h2>音频</h2>
         {% if audio_url %}
         <p><a class="button" href="{{ audio_url }}">播放/下载 MP3</a></p>
-        {% else %}
+        {% elif has_audio_attachment %}
         <p>本次音频已作为邮件附件发送。</p>
+        {% else %}
+        <p>本次音频暂时生成失败，今天先阅读文本；系统会继续自动重试。</p>
         {% endif %}
       </div>
 

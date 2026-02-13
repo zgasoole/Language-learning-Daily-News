@@ -45,6 +45,7 @@ class DailyJob:
         state_repo.apply_existing_progress(lesson)
 
         audio_file = self._generate_audio(lesson.audio_text, language_pack.default_voice())
+        audio_attached = bool(audio_file and audio_file.exists())
         audio_url = self._build_audio_url(audio_file)
 
         renderer = EmailRenderer(
@@ -53,14 +54,18 @@ class DailyJob:
             feedback_subject_prefix=self.settings.feedback_subject_prefix,
             feedback_token=self.settings.feedback_token,
         )
-        html = renderer.render_daily_lesson(lesson=lesson, audio_url=audio_url)
+        html = renderer.render_daily_lesson(
+            lesson=lesson,
+            audio_url=audio_url,
+            has_audio_attachment=audio_attached,
+        )
 
         if dry_run:
             output = self.settings.data_dir / "logs" / "latest_email_preview.html"
             output.parent.mkdir(parents=True, exist_ok=True)
             output.write_text(html, encoding="utf-8")
             print(f"[DRY-RUN] Email HTML saved to: {output}")
-            print(f"[DRY-RUN] Audio file: {audio_file}")
+            print(f"[DRY-RUN] Audio file: {audio_file if audio_attached else 'none'}")
         else:
             sender = SMTPSender(
                 host=self.settings.smtp_host,
@@ -74,7 +79,7 @@ class DailyJob:
                 to_address=self.settings.email_to,
                 subject=subject,
                 html_body=html,
-                audio_attachment=audio_file,
+                audio_attachment=audio_file if audio_attached else None,
             )
             print(f"Email sent to {self.settings.email_to}")
 
@@ -89,14 +94,28 @@ class DailyJob:
             return self.settings.ja_rss_urls
         return []
 
-    def _generate_audio(self, text: str, fallback_voice: str) -> Path:
+    def _generate_audio(self, text: str, fallback_voice: str) -> Optional[Path]:
         provider = build_tts_provider(self.settings.tts_provider)
         voice = self.settings.edge_tts_voice or fallback_voice
         output = self.settings.data_dir / "audio" / f"{datetime.utcnow().strftime('%Y%m%d')}-{self.settings.target_language}.mp3"
-        provider.synthesize(text=text, voice=voice, output_path=output)
+
+        try:
+            provider.synthesize(text=text, voice=voice, output_path=output)
+        except Exception as exc:
+            if self.settings.tts_strict:
+                raise RuntimeError(f"TTS generation failed in strict mode: {exc}") from exc
+            print(f"[WARN] TTS generation failed, sending email without audio: {exc}")
+            return None
+
+        if not output.exists() or output.stat().st_size == 0:
+            if self.settings.tts_strict:
+                raise RuntimeError("TTS produced no usable audio file")
+            print("[WARN] TTS produced no usable audio file, sending email without audio")
+            return None
+
         return output
 
-    def _build_audio_url(self, audio_file: Path) -> Optional[str]:
-        if not self.settings.audio_public_base_url:
+    def _build_audio_url(self, audio_file: Optional[Path]) -> Optional[str]:
+        if not audio_file or not self.settings.audio_public_base_url:
             return None
         return f"{self.settings.audio_public_base_url.rstrip('/')}/{audio_file.name}"

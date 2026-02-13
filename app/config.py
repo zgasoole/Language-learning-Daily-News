@@ -67,6 +67,7 @@ class Settings:
 
     tts_provider: str
     edge_tts_voice: str
+    tts_strict: bool
     audio_public_base_url: str
 
     de_rss_urls: List[str]
@@ -128,6 +129,7 @@ def load_settings() -> Settings:
         feedback_allowed_senders=allowed_senders,
         tts_provider=_env_str("TTS_PROVIDER", "edge").lower(),
         edge_tts_voice=_env_str("EDGE_TTS_VOICE", "de-DE-KatjaNeural"),
+        tts_strict=_env_bool("TTS_STRICT", False),
         audio_public_base_url=_env_str("AUDIO_PUBLIC_BASE_URL", ""),
         de_rss_urls=_env_list(
             "DE_RSS_URLS",

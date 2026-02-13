@@ -25,7 +25,13 @@ class EmailRenderer:
     feedback_subject_prefix: str = "[LLDN]"
     feedback_token: str = ""
 
-    def render_daily_lesson(self, *, lesson: DailyLesson, audio_url: Optional[str]) -> str:
+    def render_daily_lesson(
+        self,
+        *,
+        lesson: DailyLesson,
+        audio_url: Optional[str],
+        has_audio_attachment: bool,
+    ) -> str:
         env = Environment(
             loader=FileSystemLoader(str(self.template_dir)),
             autoescape=select_autoescape(["html", "xml"]),
@@ -61,6 +67,7 @@ class EmailRenderer:
             word_cards=word_cards,
             grammar_master_link=grammar_master_link,
             audio_url=audio_url,
+            has_audio_attachment=has_audio_attachment,
             today=datetime.utcnow().strftime("%Y-%m-%d"),
         )
 
