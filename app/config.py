@@ -46,6 +46,7 @@ class Settings:
 
     gemini_api_key: str
     gemini_model: str
+    gemini_fallback_models: List[str]
 
     smtp_host: str
     smtp_port: int
@@ -106,7 +107,11 @@ def load_settings() -> Settings:
         cefr_level=_env_str("CEFR_LEVEL", "A1").upper(),
         max_articles_to_scan=_env_int("MAX_ARTICLES_TO_SCAN", 8),
         gemini_api_key=_env_str("GEMINI_API_KEY", ""),
-        gemini_model=_env_str("GEMINI_MODEL", "gemini-1.5-flash"),
+        gemini_model=_env_str("GEMINI_MODEL", "gemini-2.5-flash"),
+        gemini_fallback_models=_env_list(
+            "GEMINI_FALLBACK_MODELS",
+            ["gemini-2.5-flash-lite", "gemini-2.0-flash", "gemini-flash-latest"],
+        ),
         smtp_host=_env_str("SMTP_HOST", "smtp.gmail.com"),
         smtp_port=_env_int("SMTP_PORT", 587),
         smtp_user=smtp_user,

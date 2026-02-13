@@ -53,6 +53,8 @@ Required:
 - `FEEDBACK_TOKEN`
 
 Optional:
+- `GEMINI_MODEL` (default `gemini-2.5-flash`)
+- `GEMINI_FALLBACK_MODELS` (default `gemini-2.5-flash-lite,gemini-2.0-flash,gemini-flash-latest`)
 - `EMAIL_TO` (default equals `GMAIL_ADDRESS`)
 - `TARGET_LANGUAGE` (default `de`)
 - `CEFR_LEVEL` (default `A1`)
@@ -66,6 +68,7 @@ Optional:
 - `weekly_report.yml`: weekly statistics report (Sunday UTC)
 
 ## Notes
+- If you previously set `GEMINI_MODEL=gemini-1.5-flash`, remove or update it.
 - German is fully wired for V1.
 - French/Japanese language packs are pre-created as extension points.
 - Japanese TTS provider can be swapped later without changing pipeline structure.

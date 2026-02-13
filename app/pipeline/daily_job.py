@@ -36,6 +36,7 @@ class DailyJob:
         gemini = GeminiClient(
             api_key=self.settings.gemini_api_key,
             model=self.settings.gemini_model,
+            fallback_models=self.settings.gemini_fallback_models,
         )
         builder = LessonBuilder(gemini=gemini, language_pack=language_pack)
         lesson = builder.build(article=article, cefr_level=self.settings.cefr_level)

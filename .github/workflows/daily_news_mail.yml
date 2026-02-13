@@ -32,7 +32,8 @@ jobs:
           TARGET_LANGUAGE: ${{ secrets.TARGET_LANGUAGE || 'de' }}
           CEFR_LEVEL: ${{ secrets.CEFR_LEVEL || 'A1' }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          GEMINI_MODEL: ${{ secrets.GEMINI_MODEL || 'gemini-1.5-flash' }}
+          GEMINI_MODEL: ${{ secrets.GEMINI_MODEL || 'gemini-2.5-flash' }}
+          GEMINI_FALLBACK_MODELS: ${{ secrets.GEMINI_FALLBACK_MODELS || 'gemini-2.5-flash-lite,gemini-2.0-flash,gemini-flash-latest' }}
 
           # Minimal Gmail config
           GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
