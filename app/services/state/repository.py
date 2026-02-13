@@ -9,6 +9,9 @@ from typing import Any, Dict
 from app.models.schemas import DailyLesson
 
 
+VALID_GRAMMAR_STATUSES = {"unknown", "review", "mastered"}
+
+
 @dataclass
 class StateRepository:
     data_dir: Path
@@ -50,7 +53,8 @@ class StateRepository:
             item.mastery_level = status
 
         topic_map = grammar.get("topics", {})
-        lesson.grammar_point.mastered = bool(topic_map.get(lesson.grammar_point.topic, False))
+        raw_status = topic_map.get(lesson.grammar_point.topic, "unknown")
+        lesson.grammar_point.status = self._normalize_grammar_status(raw_status)
 
     def record_sent_lesson(self, lesson: DailyLesson) -> None:
         sent_log = self.load_json(self.sent_log_path, {"lessons": []})
@@ -70,13 +74,29 @@ class StateRepository:
         vocab.setdefault("words", {})[word] = status
         self.save_json(self.vocab_path, vocab)
 
-    def set_grammar_mastered(self, topic: str, mastered: bool) -> None:
+    def set_grammar_status(self, topic: str, status: str) -> None:
         grammar = self.load_json(self.grammar_path, {"topics": {}})
-        grammar.setdefault("topics", {})[topic] = mastered
+        grammar.setdefault("topics", {})[topic] = self._normalize_grammar_status(status)
         self.save_json(self.grammar_path, grammar)
+
+    def set_grammar_mastered(self, topic: str, mastered: bool) -> None:
+        self.set_grammar_status(topic=topic, status="mastered" if mastered else "review")
 
     def record_feedback_event(self, event: Dict[str, Any]) -> None:
         payload = self.load_json(self.feedback_log_path, {"events": []})
         item = {"timestamp": datetime.utcnow().isoformat(), **event}
         payload.setdefault("events", []).append(item)
         self.save_json(self.feedback_log_path, payload)
+
+    def _normalize_grammar_status(self, value: Any) -> str:
+        if isinstance(value, bool):
+            return "mastered" if value else "review"
+
+        text = str(value).strip().lower()
+        if text in VALID_GRAMMAR_STATUSES:
+            return text
+        if text in {"true", "1", "yes", "on"}:
+            return "mastered"
+        if text in {"false", "0", "no", "off", "needs_review", "need_review"}:
+            return "review"
+        return "unknown"

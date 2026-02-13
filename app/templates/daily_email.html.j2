@@ -13,7 +13,7 @@
         color: #1a1f24;
       }
       .wrapper {
-        max-width: 760px;
+        max-width: 820px;
         margin: 24px auto;
         background: #ffffff;
         border-radius: 16px;
@@ -44,13 +44,33 @@
         line-height: 1.8;
         font-size: 16px;
       }
-      .translation {
-        line-height: 1.8;
-        font-size: 15px;
-        background: #fafcff;
-        border: 1px solid #e6eef8;
+      .hint {
+        background: #fff7e6;
+        border: 1px solid #ffdf9d;
+        color: #7a5900;
+        padding: 10px 12px;
+        border-radius: 8px;
+        font-size: 13px;
+      }
+      .parallel-table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid #e0e8f2;
         border-radius: 10px;
-        padding: 14px;
+        overflow: hidden;
+      }
+      .parallel-table th,
+      .parallel-table td {
+        border-bottom: 1px solid #e7edf4;
+        vertical-align: top;
+        padding: 10px;
+        line-height: 1.75;
+        font-size: 15px;
+      }
+      .parallel-table th {
+        background: #f7fbff;
+        text-align: left;
+        font-size: 14px;
       }
       .word-card {
         border: 1px solid #e7ecf2;
@@ -96,13 +116,36 @@
       .source a {
         color: #185ba5;
       }
-      .hint {
-        background: #fff7e6;
-        border: 1px solid #ffdf9d;
-        color: #7a5900;
-        padding: 10px 12px;
+      .feedback-form {
+        border: 1px solid #e5ebf3;
+        border-radius: 10px;
+        padding: 12px;
+        background: #f9fcff;
+      }
+      .feedback-form .row {
+        margin: 8px 0;
+      }
+      .feedback-form label {
+        margin-right: 12px;
+        font-size: 14px;
+      }
+      .submit-btn {
+        margin-top: 10px;
+        display: inline-block;
+        padding: 10px 14px;
+        border: 1px solid #a4c4e8;
         border-radius: 8px;
-        font-size: 13px;
+        background: #dff0ff;
+        color: #16395f;
+        font-weight: 600;
+      }
+      .detail-box {
+        background: #fafcff;
+        border: 1px solid #e6eef8;
+        border-radius: 10px;
+        padding: 12px;
+        white-space: pre-line;
+        line-height: 1.75;
       }
     </style>
   </head>
@@ -119,49 +162,99 @@
       </div>
 
       <div class="section">
-        <h2>全文中文翻译</h2>
-        <div class="translation">{{ lesson.chinese_translation }}</div>
+        <h2>德语原文与中文对照（按句对齐）</h2>
+        <table class="parallel-table">
+          <thead>
+            <tr>
+              <th style="width:50%;">Deutsch</th>
+              <th style="width:50%;">中文</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for pair in sentence_pairs %}
+            <tr>
+              <td>{{ pair.de_sentence }}</td>
+              <td>{{ pair.zh_sentence }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <div style="margin-top: 14px;">
+          <h3 style="margin: 0 0 8px; font-size: 16px;">音频</h3>
+          {% if audio_url %}
+          <p><a class="button" href="{{ audio_url }}">播放/下载 MP3</a></p>
+          {% elif has_audio_attachment %}
+          <p>本次音频已作为邮件附件发送，请在附件区域播放。</p>
+          {% else %}
+          <p>本次音频暂时生成失败，今天先阅读文本；系统会继续自动重试。</p>
+          {% endif %}
+        </div>
       </div>
 
       <div class="section">
         <h2>重点词汇 (5)</h2>
-        <p class="hint">点击按钮后会打开邮件草稿，发送后系统会自动更新 GitHub 里的词汇掌握库。</p>
         {% for card in word_cards %}
         <div class="word-card">
           <h3>{{ card.word.word }} <span class="badge">{{ card.word.part_of_speech }}</span></h3>
           <p><strong>释义(德):</strong> {{ card.word.explanation }}</p>
           <p><strong>词源:</strong> {{ card.word.etymology }}</p>
-          <p><strong>构词:</strong> {{ card.word.morphology }}</p>
+          <p><strong>构词(中文拆解):</strong> {{ card.word.morphology }}</p>
           <p><strong>时态/变位:</strong> {{ card.word.tense_or_inflection }}</p>
           <p><strong>英/中:</strong> {{ card.word.translation_en }} / {{ card.word.translation_zh }}</p>
           <p><strong>例句:</strong> {{ card.word.example_sentence_de }}</p>
-          <p class="meta">当前掌握度: {{ card.mastery_label }}</p>
-          <a class="button" href="{{ card.links.unknown }}">完全不懂</a>
-          <a class="button" href="{{ card.links.fuzzy }}">隐约懂点</a>
-          <a class="button" href="{{ card.links.known }}">熟悉</a>
+          <p class="meta">当前掌握度: {{ card.status_label }}</p>
         </div>
         {% endfor %}
       </div>
 
       <div class="section">
-        <h2>今日语法</h2>
+        <h2>今日语法（讲透版）</h2>
         <p><strong>主题:</strong> {{ lesson.grammar_point.topic }}</p>
         <p><strong>原句:</strong> {{ lesson.grammar_point.source_sentence }}</p>
-        <p><strong>中文说明:</strong> {{ lesson.grammar_point.explanation_zh }}</p>
+        <p><strong>核心解释:</strong> {{ lesson.grammar_point.explanation_zh }}</p>
+        <div class="detail-box"><strong>详细讲解:</strong>
+{{ lesson.grammar_point.explanation_zh_detailed }}</div>
         <p><strong>补充例句:</strong> {{ lesson.grammar_point.example_de }}</p>
-        <p class="meta">已掌握: {{ lesson.grammar_point.mastered }}</p>
-        <a class="button" href="{{ grammar_master_link }}">我已掌握这个语法</a>
+        <p><strong>学习建议:</strong> {{ lesson.grammar_point.study_tips_zh }}</p>
+        <p><strong>当前语法状态:</strong> {{ grammar_status_label }}</p>
+        <p><a class="button" href="{{ lesson.grammar_point.reference_url }}">我要上网看更多解释</a></p>
       </div>
 
       <div class="section">
-        <h2>音频</h2>
-        {% if audio_url %}
-        <p><a class="button" href="{{ audio_url }}">播放/下载 MP3</a></p>
-        {% elif has_audio_attachment %}
-        <p>本次音频已作为邮件附件发送。</p>
-        {% else %}
-        <p>本次音频暂时生成失败，今天先阅读文本；系统会继续自动重试。</p>
-        {% endif %}
+        <h2>一次提交本次学习反馈</h2>
+        <p class="hint">建议在 Apple Mail（iPhone/Mac）中使用。勾选后点击一次提交，会生成一封反馈邮件；发送后即可同步到词库和语法库。</p>
+
+        <form class="feedback-form" action="{{ feedback_form_action }}" method="post" enctype="text/plain">
+          <input type="hidden" name="lln_feedback" value="1" />
+          <input type="hidden" name="token" value="{{ feedback_token if feedback_token is defined else '' }}" />
+          <input type="hidden" name="lesson_id" value="{{ lesson.lesson_id }}" />
+          <input type="hidden" name="language" value="{{ lesson.language }}" />
+
+          {% for card in word_cards %}
+          <div class="row">
+            <input type="hidden" name="word_{{ card.idx }}_text" value="{{ card.word.word }}" />
+            <strong>{{ card.word.word }}</strong>：
+            <label><input type="radio" name="word_{{ card.idx }}_status" value="unknown" {% if card.status == 'unknown' %}checked{% endif %}/> 完全不懂</label>
+            <label><input type="radio" name="word_{{ card.idx }}_status" value="fuzzy" {% if card.status == 'fuzzy' %}checked{% endif %}/> 隐约懂点</label>
+            <label><input type="radio" name="word_{{ card.idx }}_status" value="known" {% if card.status == 'known' %}checked{% endif %}/> 熟悉</label>
+          </div>
+          {% endfor %}
+
+          <div class="row">
+            <input type="hidden" name="grammar_topic" value="{{ lesson.grammar_point.topic }}" />
+            <strong>语法 {{ lesson.grammar_point.topic }}</strong>：
+            <label><input type="radio" name="grammar_status" value="mastered" {% if grammar_status == 'mastered' %}checked{% endif %}/> 我已掌握</label>
+            <label><input type="radio" name="grammar_status" value="review" {% if grammar_status != 'mastered' %}checked{% endif %}/> 我需要再学习</label>
+          </div>
+
+          <div class="row">
+            <input class="submit-btn" type="submit" value="提交本次反馈（一次发送）" />
+          </div>
+        </form>
+
+        <p style="margin-top:12px;" class="meta">如果当前邮箱客户端不支持表单，请使用备用入口：</p>
+        <p><a class="button" href="{{ feedback_fallback_link }}">打开反馈草稿（一次发送）</a></p>
       </div>
 
       <div class="section source">

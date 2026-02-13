@@ -79,12 +79,18 @@ class WeeklyReportJob:
         )
 
         vocab_status_counts = Counter(vocab.get("words", {}).values())
-        grammar_topics = grammar.get("topics", {})
-        grammar_mastered_total = sum(1 for value in grammar_topics.values() if bool(value))
+
+        grammar_topics_raw = grammar.get("topics", {})
+        grammar_topics = {
+            topic: self._normalize_grammar_status(value)
+            for topic, value in grammar_topics_raw.items()
+        }
+        grammar_status_counts = Counter(grammar_topics.values())
+
         grammar_marked_this_week = sum(
             1
             for event in grammar_events
-            if bool(event.get("mastered", False))
+            if self._normalize_grammar_status(event.get("status", event.get("mastered", ""))) == "mastered"
         )
 
         return {
@@ -101,7 +107,8 @@ class WeeklyReportJob:
             "vocab_fuzzy_total": vocab_status_counts.get("fuzzy", 0),
             "vocab_unknown_total": vocab_status_counts.get("unknown", 0),
             "grammar_total": len(grammar_topics),
-            "grammar_mastered_total": grammar_mastered_total,
+            "grammar_mastered_total": grammar_status_counts.get("mastered", 0),
+            "grammar_review_total": grammar_status_counts.get("review", 0),
             "grammar_marked_this_week": grammar_marked_this_week,
             "recent_lessons": sorted(
                 recent_lessons,
@@ -109,6 +116,19 @@ class WeeklyReportJob:
                 reverse=True,
             )[:7],
         }
+
+    def _normalize_grammar_status(self, value: object) -> str:
+        if isinstance(value, bool):
+            return "mastered" if value else "review"
+
+        text = str(value).strip().lower()
+        if text in {"mastered", "review", "unknown"}:
+            return text
+        if text in {"1", "true", "yes", "on"}:
+            return "mastered"
+        if text in {"0", "false", "no", "off"}:
+            return "review"
+        return "unknown"
 
     def _parse_ts(self, value: str) -> datetime:
         if not value:

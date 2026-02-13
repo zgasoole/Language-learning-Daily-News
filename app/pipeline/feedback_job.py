@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 from app.config import Settings
 from app.services.feedback.imap_client import IMAPFeedbackClient
-from app.services.feedback.parser import parse_feedback_body
+from app.services.feedback.parser import parse_feedback_commands
 from app.services.state.repository import StateRepository
 
 
@@ -32,38 +32,39 @@ class FeedbackJob:
         applied = 0
 
         for item in items:
-            command = parse_feedback_body(item.body, token=self.settings.feedback_token)
-            if command is None:
+            commands = parse_feedback_commands(item.body, token=self.settings.feedback_token)
+            if not commands:
                 processed_ids.append(item.msg_id)
                 continue
 
-            if command.command_type == "word":
-                state_repo.upsert_word_status(command.word, command.word_status)
-                state_repo.record_feedback_event(
-                    {
-                        "type": "word",
-                        "lesson_id": command.lesson_id,
-                        "language": command.language,
-                        "word": command.word,
-                        "status": command.word_status,
-                        "sender": item.sender,
-                    }
-                )
-                applied += 1
+            for command in commands:
+                if command.command_type == "word":
+                    state_repo.upsert_word_status(command.word, command.word_status)
+                    state_repo.record_feedback_event(
+                        {
+                            "type": "word",
+                            "lesson_id": command.lesson_id,
+                            "language": command.language,
+                            "word": command.word,
+                            "status": command.word_status,
+                            "sender": item.sender,
+                        }
+                    )
+                    applied += 1
 
-            elif command.command_type == "grammar":
-                state_repo.set_grammar_mastered(command.topic, command.mastered)
-                state_repo.record_feedback_event(
-                    {
-                        "type": "grammar",
-                        "lesson_id": command.lesson_id,
-                        "language": command.language,
-                        "topic": command.topic,
-                        "mastered": command.mastered,
-                        "sender": item.sender,
-                    }
-                )
-                applied += 1
+                elif command.command_type == "grammar":
+                    state_repo.set_grammar_status(command.topic, command.grammar_status)
+                    state_repo.record_feedback_event(
+                        {
+                            "type": "grammar",
+                            "lesson_id": command.lesson_id,
+                            "language": command.language,
+                            "topic": command.topic,
+                            "status": command.grammar_status,
+                            "sender": item.sender,
+                        }
+                    )
+                    applied += 1
 
             processed_ids.append(item.msg_id)
 

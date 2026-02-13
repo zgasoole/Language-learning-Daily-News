@@ -6,13 +6,14 @@ Daily email language coach focused on **A1-A2 German**, with extension interface
 - Daily RSS news ingestion
 - Gemini rewrite into A1-A2 level (~200 words)
 - Full Chinese translation of the rewritten news
+- Sentence-by-sentence bilingual alignment (German left, Chinese right)
 - 5 key-word detailed explanations
-- 1 grammar point from the news with mastery tracking hook
+- 1 grammar point with textbook-style detailed explanation + external learning link
 - TTS audio generation (default: `edge-tts`)
 - Beautiful HTML email rendering
 - SMTP sending (works in GitHub Actions)
 - Local JSON state tracking for vocabulary/grammar progress
-- Email-as-input feedback loop: click a button in email, send generated command email, workflow ingests and updates JSON
+- Email-as-input feedback loop: one submission can update all 5 words + grammar
 - Weekly statistics email
 
 ## Quick start
@@ -36,14 +37,16 @@ Daily email language coach focused on **A1-A2 German**, with extension interface
    python -m app.main --weekly-report-only
    ```
 
-## How feedback works
-- In each daily email, every word has 3 actions: `完全不懂` / `隐约懂点` / `熟悉`.
-- Clicking action opens a mail draft (`mailto:`) prefilled with a secure command.
-- You send that draft from iPhone or Mac mail app.
-- GitHub Action `feedback_ingest.yml` reads new feedback emails and updates:
+## Feedback flow (single submission)
+- In the daily email, a feedback form is rendered.
+- You can mark all 5 words + grammar status first.
+- Click one submit button to generate one feedback email.
+- Send that email from iPhone/Mac Mail app.
+- `feedback_ingest.yml` reads it and updates:
   - `data/progress/vocabulary_status.json`
   - `data/progress/grammar_status.json`
   - `data/progress/feedback_log.json`
+- If your mail client does not support form submission, use the fallback “single draft” link in the email.
 
 ## Minimal GitHub Actions secrets
 Required:
@@ -74,4 +77,3 @@ Optional:
 - German is fully wired for V1.
 - French/Japanese language packs are pre-created as extension points.
 - Japanese TTS provider can be swapped later without changing pipeline structure.
-- Email clients do not reliably support inline checkbox submission; this project uses mailto command links as the cross-platform fallback.

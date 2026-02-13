@@ -40,13 +40,16 @@ Schema:
   "title": "Kurzer deutscher Titel",
   "news_text": "Ca. 200 Worter, Niveau {cefr_level}, klare Satze",
   "chinese_translation": "Vollstandige chinesische Ubersetzung des news_text",
+  "sentence_pairs": [
+    {{ "de_sentence": "Ein Satz aus news_text", "zh_sentence": "对应中文翻译" }}
+  ],
   "keywords": [
     {{
       "word": "...",
       "part_of_speech": "...",
       "explanation": "Bedeutung im Kontext auf Deutsch, einfach",
       "etymology": "Kurze Wortherkunft",
-      "morphology": "Wortstamm/Präfix/Suffix/Komposition",
+      "morphology": "必须中文详细拆解：词干/前缀/后缀分别是什么意思，组合后为什么是这个意思。示例格式：Kinderbetreuung = Kind(孩子) + Betreuung(照护，来自 betreuen 看护 + -ung 名词后缀)",
       "tense_or_inflection": "Bei Verb: typische Zeitformen; bei Nomen: Genus/Plural/Flexion",
       "translation_en": "...",
       "translation_zh": "...",
@@ -56,7 +59,10 @@ Schema:
   "grammar_point": {{
     "topic": "Wichtiges Grammatikthema aus dem Text",
     "source_sentence": "Originalsatz aus news_text",
-    "explanation_zh": "中文解释",
+    "explanation_zh": "中文核心解释（2-3句）",
+    "explanation_zh_detailed": "中文详细讲解（教材风格，分点讲透：结构、位置、变形、易错点、对比）",
+    "study_tips_zh": "中文复习建议（如何练习）",
+    "reference_url": "https://... 一个可访问的语法学习页面",
     "example_de": "Zusatzbeispiel auf Deutsch"
   }},
   "audio_text": "gleich wie news_text"
@@ -67,4 +73,5 @@ Harte Regeln:
 2) Keine erfundenen Fakten, bleibe nah am Quelltext.
 3) news_text muss fur A1-A2 lernbar sein.
 4) chinese_translation muss vollstandig sein.
+5) sentence_pairs muss die Satze aus news_text in gleicher Reihenfolge enthalten.
 """.strip()
