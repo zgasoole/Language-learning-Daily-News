@@ -21,9 +21,9 @@ STATUS_LABELS: Dict[str, str] = {
 @dataclass
 class EmailRenderer:
     template_dir: Path
-    feedback_email: str
-    feedback_subject_prefix: str
-    feedback_token: str
+    feedback_email: str = ""
+    feedback_subject_prefix: str = "[LLDN]"
+    feedback_token: str = ""
 
     def render_daily_lesson(self, *, lesson: DailyLesson, audio_url: Optional[str]) -> str:
         env = Environment(
@@ -61,6 +61,19 @@ class EmailRenderer:
             word_cards=word_cards,
             grammar_master_link=grammar_master_link,
             audio_url=audio_url,
+            today=datetime.utcnow().strftime("%Y-%m-%d"),
+        )
+
+    def render_weekly_report(self, report: Dict[str, object]) -> str:
+        env = Environment(
+            loader=FileSystemLoader(str(self.template_dir)),
+            autoescape=select_autoescape(["html", "xml"]),
+            trim_blocks=True,
+            lstrip_blocks=True,
+        )
+        template = env.get_template("weekly_report.html.j2")
+        return template.render(
+            report=report,
             today=datetime.utcnow().strftime("%Y-%m-%d"),
         )
 

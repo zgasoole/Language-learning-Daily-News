@@ -80,13 +80,21 @@ def load_settings() -> Settings:
     data_dir = project_root / "data"
     template_dir = project_root / "app" / "templates"
 
-    email_to = _env_str("EMAIL_TO", "")
-    email_from = _env_str("EMAIL_FROM", "")
-    imap_user = _env_str("IMAP_USER", "")
+    gmail_address = _env_str("GMAIL_ADDRESS", "")
+    gmail_password = _env_str("GMAIL_APP_PASSWORD", "")
 
+    email_from = _env_str("EMAIL_FROM", gmail_address)
+    email_to = _env_str("EMAIL_TO", gmail_address)
+
+    smtp_user = _env_str("SMTP_USER", gmail_address)
+    smtp_password = _env_str("SMTP_PASSWORD", gmail_password)
+    imap_user = _env_str("IMAP_USER", gmail_address)
+    imap_password = _env_str("IMAP_PASSWORD", gmail_password)
+
+    allowed_fallback = [item for item in [email_to, gmail_address] if item]
     allowed_senders = [
         sender.lower()
-        for sender in _env_list("FEEDBACK_ALLOWED_SENDERS", [email_to])
+        for sender in _env_list("FEEDBACK_ALLOWED_SENDERS", allowed_fallback)
         if sender.strip()
     ]
 
@@ -99,17 +107,17 @@ def load_settings() -> Settings:
         max_articles_to_scan=_env_int("MAX_ARTICLES_TO_SCAN", 8),
         gemini_api_key=_env_str("GEMINI_API_KEY", ""),
         gemini_model=_env_str("GEMINI_MODEL", "gemini-1.5-flash"),
-        smtp_host=_env_str("SMTP_HOST", ""),
+        smtp_host=_env_str("SMTP_HOST", "smtp.gmail.com"),
         smtp_port=_env_int("SMTP_PORT", 587),
-        smtp_user=_env_str("SMTP_USER", ""),
-        smtp_password=_env_str("SMTP_PASSWORD", ""),
+        smtp_user=smtp_user,
+        smtp_password=smtp_password,
         email_from=email_from,
         email_to=email_to,
         imap_host=_env_str("IMAP_HOST", "imap.gmail.com"),
         imap_port=_env_int("IMAP_PORT", 993),
         imap_user=imap_user,
-        imap_password=_env_str("IMAP_PASSWORD", ""),
-        feedback_email=_env_str("FEEDBACK_EMAIL", imap_user or email_from),
+        imap_password=imap_password,
+        feedback_email=_env_str("FEEDBACK_EMAIL", gmail_address or imap_user or email_from),
         feedback_subject_prefix=_env_str("FEEDBACK_SUBJECT_PREFIX", "[LLDN]"),
         feedback_token=_env_str("FEEDBACK_TOKEN", ""),
         feedback_allowed_senders=allowed_senders,

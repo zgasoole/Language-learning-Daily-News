@@ -1,16 +1,16 @@
-name: Daily Language News Mail
+name: Weekly Learning Report
 
 on:
   schedule:
-    # 07:00 UTC daily. Adjust to your timezone.
-    - cron: "0 7 * * *"
+    # Every Sunday 08:00 UTC
+    - cron: "0 8 * * 0"
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  run-daily-mail:
+  weekly-report:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,31 +27,16 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run daily job
+      - name: Ingest feedback then send weekly report
         env:
-          TARGET_LANGUAGE: ${{ secrets.TARGET_LANGUAGE || 'de' }}
-          CEFR_LEVEL: ${{ secrets.CEFR_LEVEL || 'A1' }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          GEMINI_MODEL: ${{ secrets.GEMINI_MODEL || 'gemini-1.5-flash' }}
-
-          # Minimal Gmail config
           GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
           EMAIL_TO: ${{ secrets.EMAIL_TO || secrets.GMAIL_ADDRESS }}
-
           FEEDBACK_SUBJECT_PREFIX: ${{ secrets.FEEDBACK_SUBJECT_PREFIX || '[LLDN]' }}
           FEEDBACK_TOKEN: ${{ secrets.FEEDBACK_TOKEN }}
           FEEDBACK_ALLOWED_SENDERS: ${{ secrets.FEEDBACK_ALLOWED_SENDERS }}
-
-          TTS_PROVIDER: ${{ secrets.TTS_PROVIDER || 'edge' }}
-          EDGE_TTS_VOICE: ${{ secrets.EDGE_TTS_VOICE || 'de-DE-KatjaNeural' }}
-
-          DE_RSS_URLS: ${{ secrets.DE_RSS_URLS }}
-          FR_RSS_URLS: ${{ secrets.FR_RSS_URLS }}
-          JA_RSS_URLS: ${{ secrets.JA_RSS_URLS }}
-          AUDIO_PUBLIC_BASE_URL: ${{ secrets.AUDIO_PUBLIC_BASE_URL }}
         run: |
-          python -m app.main
+          python -m app.main --ingest-feedback --weekly-report-only
 
       - name: Commit progress snapshots
         run: |
@@ -59,7 +44,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/progress/*.json || true
           if ! git diff --cached --quiet; then
-            git commit -m "chore: update learning progress snapshots"
+            git commit -m "chore: weekly report feedback ingest updates"
             git push
           else
             echo "No progress file changes"

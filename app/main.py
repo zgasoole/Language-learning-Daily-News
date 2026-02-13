@@ -7,6 +7,7 @@ from pathlib import Path
 from app.config import load_settings
 from app.pipeline.daily_job import DailyJob
 from app.pipeline.feedback_job import FeedbackJob
+from app.pipeline.weekly_report_job import WeeklyReportJob
 
 
 def _load_dotenv(project_root: Path) -> None:
@@ -24,12 +25,13 @@ def _load_dotenv(project_root: Path) -> None:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run daily language-learning email jobs")
-    parser.add_argument("--dry-run", action="store_true", help="Generate lesson and HTML, do not send email")
+    parser.add_argument("--dry-run", action="store_true", help="Generate lesson/report HTML, do not send email")
     parser.add_argument("--feedback-only", action="store_true", help="Only ingest feedback emails")
+    parser.add_argument("--weekly-report-only", action="store_true", help="Only send weekly report email")
     parser.add_argument(
         "--ingest-feedback",
         action="store_true",
-        help="Ingest feedback first, then run daily lesson job",
+        help="Ingest feedback first, then run requested email job",
     )
     return parser.parse_args()
 
@@ -51,6 +53,12 @@ def main() -> None:
         feedback_job.run()
 
     dry_run = args.dry_run or settings.dry_run
+
+    if args.weekly_report_only:
+        weekly_job = WeeklyReportJob(settings=settings)
+        weekly_job.run(dry_run=dry_run)
+        return
+
     job = DailyJob(settings=settings)
     job.run(dry_run=dry_run)
 

@@ -29,14 +29,13 @@ jobs:
 
       - name: Ingest feedback emails
         env:
-          IMAP_HOST: ${{ secrets.IMAP_HOST || 'imap.gmail.com' }}
-          IMAP_PORT: ${{ secrets.IMAP_PORT || '993' }}
-          IMAP_USER: ${{ secrets.IMAP_USER }}
-          IMAP_PASSWORD: ${{ secrets.IMAP_PASSWORD }}
+          GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO || secrets.GMAIL_ADDRESS }}
+
           FEEDBACK_SUBJECT_PREFIX: ${{ secrets.FEEDBACK_SUBJECT_PREFIX || '[LLDN]' }}
           FEEDBACK_TOKEN: ${{ secrets.FEEDBACK_TOKEN }}
           FEEDBACK_ALLOWED_SENDERS: ${{ secrets.FEEDBACK_ALLOWED_SENDERS }}
-          EMAIL_TO: ${{ secrets.EMAIL_TO }}
         run: |
           python -m app.main --feedback-only
 

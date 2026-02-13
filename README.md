@@ -13,6 +13,7 @@ Daily email language coach focused on **A1-A2 German**, with extension interface
 - SMTP sending (works in GitHub Actions)
 - Local JSON state tracking for vocabulary/grammar progress
 - Email-as-input feedback loop: click a button in email, send generated command email, workflow ingests and updates JSON
+- Weekly statistics email
 
 ## Quick start
 1. Create virtual environment and install deps:
@@ -22,7 +23,7 @@ Daily email language coach focused on **A1-A2 German**, with extension interface
    pip install -r requirements.txt
    ```
 2. Create `.env` from `.env.example` and fill required values.
-3. Dry run (no email, output HTML preview):
+3. Dry run (daily, no email):
    ```bash
    python -m app.main --dry-run
    ```
@@ -30,43 +31,39 @@ Daily email language coach focused on **A1-A2 German**, with extension interface
    ```bash
    python -m app.main --feedback-only
    ```
-5. Real run (send email):
+5. Weekly report only:
    ```bash
-   python -m app.main
+   python -m app.main --weekly-report-only
    ```
 
 ## How feedback works
 - In each daily email, every word has 3 actions: `完全不懂` / `隐约懂点` / `熟悉`.
 - Clicking action opens a mail draft (`mailto:`) prefilled with a secure command.
 - You send that draft from iPhone or Mac mail app.
-- GitHub Action `feedback_ingest.yml` reads new feedback emails via IMAP and updates:
+- GitHub Action `feedback_ingest.yml` reads new feedback emails and updates:
   - `data/progress/vocabulary_status.json`
   - `data/progress/grammar_status.json`
   - `data/progress/feedback_log.json`
 
-## GitHub Actions secrets
-Set these repository secrets:
+## Minimal GitHub Actions secrets
+Required:
 - `GEMINI_API_KEY`
-- `SMTP_HOST`
-- `SMTP_PORT`
-- `SMTP_USER`
-- `SMTP_PASSWORD`
-- `EMAIL_FROM`
-- `EMAIL_TO`
-- `IMAP_HOST` (default `imap.gmail.com`)
-- `IMAP_PORT` (default `993`)
-- `IMAP_USER`
-- `IMAP_PASSWORD`
-- `FEEDBACK_EMAIL`
-- `FEEDBACK_SUBJECT_PREFIX` (default `[LLDN]`)
-- `FEEDBACK_TOKEN` (long random string)
-- `FEEDBACK_ALLOWED_SENDERS` (comma-separated email list)
+- `GMAIL_ADDRESS`
+- `GMAIL_APP_PASSWORD`
+- `FEEDBACK_TOKEN`
 
 Optional:
+- `EMAIL_TO` (default equals `GMAIL_ADDRESS`)
 - `TARGET_LANGUAGE` (default `de`)
 - `CEFR_LEVEL` (default `A1`)
 - `EDGE_TTS_VOICE`
+- `FEEDBACK_ALLOWED_SENDERS`
 - `DE_RSS_URLS`
+
+## Workflows
+- `daily_news_mail.yml`: daily lesson email
+- `feedback_ingest.yml`: feedback ingestion every 30 min
+- `weekly_report.yml`: weekly statistics report (Sunday UTC)
 
 ## Notes
 - German is fully wired for V1.
