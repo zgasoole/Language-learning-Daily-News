@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List
+from typing import Any, Dict, List
 
 from app.language_packs.base import LanguagePack
 
@@ -24,9 +24,31 @@ class GermanPack(LanguagePack):
             "Erzeuge korrektes, klares und lernorientiertes Material."
         )
 
-    def lesson_prompt(self, article_title: str, article_text: str, cefr_level: str) -> str:
+    def lesson_prompt(
+        self,
+        article_title: str,
+        article_text: str,
+        cefr_level: str,
+        study_context: Dict[str, Any] | None = None,
+    ) -> str:
+        study_context = study_context or {}
+
+        known_words = ", ".join(study_context.get("known_words", [])[:120])
+        review_words = ", ".join(study_context.get("priority_review_words", [])[:80])
+        effective_level = str(study_context.get("effective_level", cefr_level)).strip() or cefr_level
+        known_count = int(study_context.get("known_count", 0))
+
+        profile_note = f"""
+Lernprofil (wichtige Steuerung):
+- Basisniveau: {cefr_level}
+- Zielniveau heute (progressiv): {effective_level}
+- Bereits sichere Worter (NICHT als 5 Schlusselworter auswahlen): {known_words if known_words else '(keine)'}
+- Worter mit Wiederholungsbedarf (bevorzugen): {review_words if review_words else '(keine)'}
+- Bekannte Worter gesamt: {known_count}
+""".strip()
+
         return f"""
-Nutze den folgenden Nachrichteninhalt und erstelle Lernmaterial fur Deutsch {cefr_level}.
+Nutze den folgenden Nachrichteninhalt und erstelle Lernmaterial fur Deutsch {effective_level}.
 
 Titel der Quelle:
 {article_title}
@@ -34,11 +56,13 @@ Titel der Quelle:
 Text der Quelle:
 {article_text}
 
+{profile_note}
+
 Ausgabe NUR als gueltiges JSON ohne Markdown.
 Schema:
 {{
   "title": "Kurzer deutscher Titel",
-  "news_text": "Ca. 200 Worter, Niveau {cefr_level}, klare Satze",
+  "news_text": "Ca. 200 Worter, Niveau {effective_level}, klare Satze",
   "chinese_translation": "Vollstandige chinesische Ubersetzung des news_text",
   "sentence_pairs": [
     {{ "de_sentence": "Ein Satz aus news_text", "zh_sentence": "对应中文翻译" }}
@@ -71,7 +95,9 @@ Schema:
 Harte Regeln:
 1) keywords genau 5 Eintrage.
 2) Keine erfundenen Fakten, bleibe nah am Quelltext.
-3) news_text muss fur A1-A2 lernbar sein.
+3) news_text muss fur A1-A2/A2+ lernbar sein.
 4) chinese_translation muss vollstandig sein.
 5) sentence_pairs muss die Satze aus news_text in gleicher Reihenfolge enthalten.
+6) keywords duerfen NICHT aus den bereits sicheren Wortern kommen.
+7) keywords sollen bevorzugt aus Wiederholungsbedarf oder neuen, leicht anspruchsvolleren Wortern kommen.
 """.strip()

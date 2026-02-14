@@ -14,6 +14,7 @@ class InboxItem:
     subject: str
     sender: str
     body: str
+    message_key: str
 
 
 @dataclass
@@ -25,20 +26,25 @@ class IMAPFeedbackClient:
     subject_prefix: str
     allowed_senders: List[str]
 
-    def fetch_unseen_items(self) -> List[InboxItem]:
+    def fetch_recent_items(self, *, limit: int = 200) -> List[InboxItem]:
         if not all([self.host, self.port, self.username, self.password]):
             raise ValueError("IMAP config is incomplete")
 
         items: List[InboxItem] = []
+        normalized_allowed = {self._normalize_email(sender) for sender in self.allowed_senders if sender.strip()}
+
         with imaplib.IMAP4_SSL(self.host, self.port) as client:
             client.login(self.username, self.password)
             client.select("INBOX")
 
-            typ, data = client.search(None, "UNSEEN")
-            if typ != "OK":
+            typ, data = client.search(None, "ALL")
+            if typ != "OK" or not data or not data[0]:
                 return []
 
-            for msg_id in data[0].split():
+            msg_ids = data[0].split()
+            msg_ids = msg_ids[-limit:]
+
+            for msg_id in msg_ids:
                 typ, msg_data = client.fetch(msg_id, "(RFC822)")
                 if typ != "OK" or not msg_data:
                     continue
@@ -47,19 +53,24 @@ class IMAPFeedbackClient:
                 msg = email.message_from_bytes(raw_bytes)
                 subject = self._decode_header_value(msg.get("Subject", ""))
                 sender = parseaddr(msg.get("From", ""))[1].lower().strip()
+                sender_norm = self._normalize_email(sender)
 
                 if self.subject_prefix and self.subject_prefix not in subject:
                     continue
-                if self.allowed_senders and sender not in self.allowed_senders:
+                if normalized_allowed and sender_norm not in normalized_allowed:
                     continue
 
                 body = self._extract_text_body(msg)
+                message_id_header = str(msg.get("Message-ID", "")).strip()
+                message_key = message_id_header or f"imap-{msg_id.decode(errors='ignore')}"
+
                 items.append(
                     InboxItem(
                         msg_id=msg_id,
                         subject=subject,
                         sender=sender,
                         body=body,
+                        message_key=message_key,
                     )
                 )
 
@@ -106,3 +117,12 @@ class IMAPFeedbackClient:
             else:
                 parts.append(chunk)
         return "".join(parts)
+
+    def _normalize_email(self, email_value: str) -> str:
+        email_value = email_value.strip().lower()
+        if "@" not in email_value:
+            return email_value
+        local, domain = email_value.split("@", 1)
+        if domain in {"gmail.com", "googlemail.com"}:
+            local = local.split("+", 1)[0].replace(".", "")
+        return f"{local}@{domain}"

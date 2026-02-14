@@ -32,6 +32,9 @@ class DailyJob:
             raise RuntimeError("No articles fetched from configured RSS feeds")
 
         article = articles[0]
+        state_repo = StateRepository(data_dir=self.settings.data_dir)
+        study_profile = state_repo.build_study_profile(base_level=self.settings.cefr_level)
+        effective_level = str(study_profile.get("effective_level", self.settings.cefr_level))
 
         gemini = GeminiClient(
             api_key=self.settings.gemini_api_key,
@@ -39,9 +42,12 @@ class DailyJob:
             fallback_models=self.settings.gemini_fallback_models,
         )
         builder = LessonBuilder(gemini=gemini, language_pack=language_pack)
-        lesson = builder.build(article=article, cefr_level=self.settings.cefr_level)
+        lesson = builder.build(
+            article=article,
+            cefr_level=effective_level,
+            study_profile=study_profile,
+        )
 
-        state_repo = StateRepository(data_dir=self.settings.data_dir)
         state_repo.apply_existing_progress(lesson)
 
         audio_file = self._generate_audio(lesson.audio_text, language_pack.default_voice())
@@ -66,6 +72,7 @@ class DailyJob:
             output.write_text(html, encoding="utf-8")
             print(f"[DRY-RUN] Email HTML saved to: {output}")
             print(f"[DRY-RUN] Audio file: {audio_file if audio_attached else 'none'}")
+            print(f"[DRY-RUN] Effective level: {effective_level}")
         else:
             sender = SMTPSender(
                 host=self.settings.smtp_host,
@@ -74,7 +81,7 @@ class DailyJob:
                 password=self.settings.smtp_password,
                 sender=self.settings.email_from,
             )
-            subject = f"[{language_pack.display_name} {self.settings.cefr_level}] {lesson.title}"
+            subject = f"[{language_pack.display_name} {lesson.cefr_level}] {lesson.title}"
             sender.send_html(
                 to_address=self.settings.email_to,
                 subject=subject,

@@ -50,3 +50,15 @@ def test_parse_batch_feedback() -> None:
     assert any(c.command_type == "word" and c.word == "Schule" and c.word_status == "unknown" for c in cmds)
     assert any(c.command_type == "word" and c.word == "Stadt" and c.word_status == "known" for c in cmds)
     assert any(c.command_type == "grammar" and c.topic == "Verbzweitstellung" and c.grammar_status == "review" for c in cmds)
+
+
+def test_parse_batch_feedback_ignores_token_mismatch() -> None:
+    body = """lln_feedback=1
+ token=abc
+ lesson_id=de-20260213
+ language=de
+ word_1_text=Schule
+ word_1_status=unknown
+"""
+    cmds = parse_feedback_commands(body, token="wrong")
+    assert cmds == []

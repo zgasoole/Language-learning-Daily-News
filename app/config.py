@@ -64,6 +64,7 @@ class Settings:
     feedback_subject_prefix: str
     feedback_token: str
     feedback_allowed_senders: List[str]
+    feedback_strict_sender: bool
 
     tts_provider: str
     edge_tts_voice: str
@@ -93,7 +94,11 @@ def load_settings() -> Settings:
     imap_user = _env_str("IMAP_USER", gmail_address)
     imap_password = _env_str("IMAP_PASSWORD", gmail_password)
 
-    allowed_fallback = [item for item in [email_to, gmail_address] if item]
+    strict_sender = _env_bool("FEEDBACK_STRICT_SENDER", False)
+    allowed_fallback: List[str] = []
+    if strict_sender:
+        allowed_fallback = [item for item in [email_to, gmail_address] if item]
+
     allowed_senders = [
         sender.lower()
         for sender in _env_list("FEEDBACK_ALLOWED_SENDERS", allowed_fallback)
@@ -127,6 +132,7 @@ def load_settings() -> Settings:
         feedback_subject_prefix=_env_str("FEEDBACK_SUBJECT_PREFIX", "[LLDN]"),
         feedback_token=_env_str("FEEDBACK_TOKEN", ""),
         feedback_allowed_senders=allowed_senders,
+        feedback_strict_sender=strict_sender,
         tts_provider=_env_str("TTS_PROVIDER", "edge").lower(),
         edge_tts_voice=_env_str("EDGE_TTS_VOICE", "de-DE-KatjaNeural"),
         tts_strict=_env_bool("TTS_STRICT", False),

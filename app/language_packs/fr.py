@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List
+from typing import Any, Dict, List
 
 from app.language_packs.base import LanguagePack
 
@@ -21,7 +21,14 @@ class FrenchPack(LanguagePack):
             "Output educational content in strict JSON."
         )
 
-    def lesson_prompt(self, article_title: str, article_text: str, cefr_level: str) -> str:
+    def lesson_prompt(
+        self,
+        article_title: str,
+        article_text: str,
+        cefr_level: str,
+        study_context: Dict[str, Any] | None = None,
+    ) -> str:
+        _ = (article_title, article_text, cefr_level, study_context)
         return (
             "French pack placeholder. Keep same JSON schema as German pack. "
             "Implement details when French rollout starts."

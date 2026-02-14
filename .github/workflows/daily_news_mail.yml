@@ -52,7 +52,7 @@ jobs:
           JA_RSS_URLS: ${{ secrets.JA_RSS_URLS }}
           AUDIO_PUBLIC_BASE_URL: ${{ secrets.AUDIO_PUBLIC_BASE_URL }}
         run: |
-          python -m app.main
+          python -m app.main --ingest-feedback
 
       - name: Commit progress snapshots
         run: |

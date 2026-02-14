@@ -4,7 +4,7 @@ import json
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Dict, List, Set
 
 from app.models.schemas import DailyLesson
 
@@ -56,6 +56,26 @@ class StateRepository:
         raw_status = topic_map.get(lesson.grammar_point.topic, "unknown")
         lesson.grammar_point.status = self._normalize_grammar_status(raw_status)
 
+    def build_study_profile(self, base_level: str) -> Dict[str, Any]:
+        vocab = self.load_json(self.vocab_path, {"words": {}})
+        words_map = vocab.get("words", {})
+
+        known_words = sorted([word for word, status in words_map.items() if str(status) == "known"])
+        fuzzy_words = sorted([word for word, status in words_map.items() if str(status) == "fuzzy"])
+        unknown_words = sorted([word for word, status in words_map.items() if str(status) == "unknown"])
+
+        effective_level = self._compute_effective_level(base_level=base_level, known_count=len(known_words))
+
+        return {
+            "base_level": base_level,
+            "effective_level": effective_level,
+            "known_count": len(known_words),
+            "fuzzy_count": len(fuzzy_words),
+            "unknown_count": len(unknown_words),
+            "known_words": known_words[-300:],
+            "priority_review_words": (unknown_words + fuzzy_words)[:160],
+        }
+
     def record_sent_lesson(self, lesson: DailyLesson) -> None:
         sent_log = self.load_json(self.sent_log_path, {"lessons": []})
         sent_log.setdefault("lessons", []).append(
@@ -83,9 +103,24 @@ class StateRepository:
         self.set_grammar_status(topic=topic, status="mastered" if mastered else "review")
 
     def record_feedback_event(self, event: Dict[str, Any]) -> None:
-        payload = self.load_json(self.feedback_log_path, {"events": []})
+        payload = self.load_json(self.feedback_log_path, {"events": [], "processed_message_keys": []})
         item = {"timestamp": datetime.utcnow().isoformat(), **event}
         payload.setdefault("events", []).append(item)
+        self.save_json(self.feedback_log_path, payload)
+
+    def get_processed_feedback_message_keys(self) -> Set[str]:
+        payload = self.load_json(self.feedback_log_path, {"events": [], "processed_message_keys": []})
+        raw_keys = payload.get("processed_message_keys", [])
+        return {str(item).strip() for item in raw_keys if str(item).strip()}
+
+    def mark_feedback_message_processed(self, message_key: str) -> None:
+        if not message_key.strip():
+            return
+        payload = self.load_json(self.feedback_log_path, {"events": [], "processed_message_keys": []})
+        keys: List[str] = [str(item).strip() for item in payload.get("processed_message_keys", []) if str(item).strip()]
+        if message_key not in keys:
+            keys.append(message_key)
+        payload["processed_message_keys"] = keys[-5000:]
         self.save_json(self.feedback_log_path, payload)
 
     def _normalize_grammar_status(self, value: Any) -> str:
@@ -100,3 +135,16 @@ class StateRepository:
         if text in {"false", "0", "no", "off", "needs_review", "need_review"}:
             return "review"
         return "unknown"
+
+    def _compute_effective_level(self, base_level: str, known_count: int) -> str:
+        base = base_level.upper().strip()
+
+        # Progressive difficulty target: as known words accumulate,
+        # move from A1 -> A2 -> A2+ (close to B1 entry).
+        if known_count >= 450:
+            return "A2+"
+        if known_count >= 180:
+            return "A2"
+        if known_count >= 70 and base == "A1":
+            return "A1+"
+        return base
