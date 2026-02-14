@@ -1,3 +1,9 @@
 {
-  "words": {}
+  "words": {
+    "Konferenz": "fuzzy",
+    "zusammenarbeiten": "fuzzy",
+    "wichtig": "unknown",
+    "Partner": "known",
+    "Regierung": "unknown"
+  }
 }

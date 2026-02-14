@@ -1,3 +1,61 @@
 {
-  "events": []
+  "events": [
+    {
+      "timestamp": "2026-02-14T08:57:07.216766",
+      "type": "word",
+      "lesson_id": "de-20260214",
+      "language": "de",
+      "word": "Konferenz",
+      "status": "fuzzy",
+      "sender": "zgasoole@gmail.com"
+    },
+    {
+      "timestamp": "2026-02-14T08:57:07.217276",
+      "type": "word",
+      "lesson_id": "de-20260214",
+      "language": "de",
+      "word": "zusammenarbeiten",
+      "status": "fuzzy",
+      "sender": "zgasoole@gmail.com"
+    },
+    {
+      "timestamp": "2026-02-14T08:57:07.217830",
+      "type": "word",
+      "lesson_id": "de-20260214",
+      "language": "de",
+      "word": "wichtig",
+      "status": "unknown",
+      "sender": "zgasoole@gmail.com"
+    },
+    {
+      "timestamp": "2026-02-14T08:57:07.218260",
+      "type": "word",
+      "lesson_id": "de-20260214",
+      "language": "de",
+      "word": "Partner",
+      "status": "known",
+      "sender": "zgasoole@gmail.com"
+    },
+    {
+      "timestamp": "2026-02-14T08:57:07.218702",
+      "type": "word",
+      "lesson_id": "de-20260214",
+      "language": "de",
+      "word": "Regierung",
+      "status": "unknown",
+      "sender": "zgasoole@gmail.com"
+    },
+    {
+      "timestamp": "2026-02-14T08:57:07.219139",
+      "type": "grammar",
+      "lesson_id": "de-20260214",
+      "language": "de",
+      "topic": "Satzbau: Subjekt â€“ Verb â€“ Objekt (SVO)",
+      "status": "review",
+      "sender": "zgasoole@gmail.com"
+    }
+  ],
+  "processed_message_keys": [
+    "<A2897575-50BA-44A0-9F9D-C3EF141061AE@gmail.com>"
+  ]
 }
