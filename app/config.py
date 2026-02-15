@@ -59,6 +59,7 @@ class Settings:
     imap_port: int
     imap_user: str
     imap_password: str
+    imap_feedback_mailboxes: List[str]
 
     feedback_email: str
     feedback_subject_prefix: str
@@ -128,6 +129,10 @@ def load_settings() -> Settings:
         imap_port=_env_int("IMAP_PORT", 993),
         imap_user=imap_user,
         imap_password=imap_password,
+        imap_feedback_mailboxes=_env_list(
+            "IMAP_FEEDBACK_MAILBOXES",
+            ["INBOX", "[Gmail]/All Mail", "[Gmail]/Sent Mail", "Sent", "Sent Messages"],
+        ),
         feedback_email=_env_str("FEEDBACK_EMAIL", gmail_address or imap_user or email_from),
         feedback_subject_prefix=_env_str("FEEDBACK_SUBJECT_PREFIX", "[LLDN]"),
         feedback_token=_env_str("FEEDBACK_TOKEN", ""),

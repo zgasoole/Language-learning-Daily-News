@@ -2,8 +2,8 @@ name: Ingest Learning Feedback
 
 on:
   schedule:
-    # Every 30 minutes
-    - cron: "*/30 * * * *"
+    # Every 10 minutes
+    - cron: "*/10 * * * *"
   workflow_dispatch:
 
 permissions:
@@ -36,6 +36,8 @@ jobs:
           FEEDBACK_SUBJECT_PREFIX: ${{ secrets.FEEDBACK_SUBJECT_PREFIX || '[LLDN]' }}
           FEEDBACK_TOKEN: ${{ secrets.FEEDBACK_TOKEN }}
           FEEDBACK_ALLOWED_SENDERS: ${{ secrets.FEEDBACK_ALLOWED_SENDERS }}
+          FEEDBACK_STRICT_SENDER: ${{ secrets.FEEDBACK_STRICT_SENDER || '0' }}
+          IMAP_FEEDBACK_MAILBOXES: ${{ secrets.IMAP_FEEDBACK_MAILBOXES }}
         run: |
           python -m app.main --feedback-only
 

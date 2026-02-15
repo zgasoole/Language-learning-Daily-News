@@ -25,12 +25,13 @@ class FeedbackJob:
             password=self.settings.imap_password,
             subject_prefix=self.settings.feedback_subject_prefix,
             allowed_senders=allowed_senders,
+            mailboxes=self.settings.imap_feedback_mailboxes,
         )
         state_repo = StateRepository(data_dir=self.settings.data_dir)
 
         processed_keys = state_repo.get_processed_feedback_message_keys()
         items = client.fetch_recent_items(limit=240)
-        processed_ids: list[bytes] = []
+        processed_marks: list[tuple[str, bytes]] = []
         applied = 0
 
         for item in items:
@@ -45,11 +46,14 @@ class FeedbackJob:
                         "reason": "no_valid_commands_or_token_mismatch",
                         "subject": item.subject,
                         "sender": item.sender,
+                        "mailbox": item.mailbox,
+                        "message_key": item.message_key,
+                        "body_preview": item.body[:240],
                     }
                 )
                 state_repo.mark_feedback_message_processed(item.message_key)
                 processed_keys.add(item.message_key)
-                processed_ids.append(item.msg_id)
+                processed_marks.append((item.mailbox, item.msg_id))
                 continue
 
             for command in commands:
@@ -63,6 +67,8 @@ class FeedbackJob:
                             "word": command.word,
                             "status": command.word_status,
                             "sender": item.sender,
+                            "mailbox": item.mailbox,
+                            "message_key": item.message_key,
                         }
                     )
                     applied += 1
@@ -77,14 +83,16 @@ class FeedbackJob:
                             "topic": command.topic,
                             "status": command.grammar_status,
                             "sender": item.sender,
+                            "mailbox": item.mailbox,
+                            "message_key": item.message_key,
                         }
                     )
                     applied += 1
 
             state_repo.mark_feedback_message_processed(item.message_key)
             processed_keys.add(item.message_key)
-            processed_ids.append(item.msg_id)
+            processed_marks.append((item.mailbox, item.msg_id))
 
-        client.mark_seen(processed_ids)
+        client.mark_seen(processed_marks)
         print(f"Feedback processed: {applied}/{len(items)}")
         return applied

@@ -44,7 +44,7 @@ Daily email language coach focused on **A1-A2 German**, with extension interface
 - You can mark all 5 words + grammar status first.
 - Click one submit button to generate one feedback email.
 - Send that email from iPhone/Mac Mail app.
-- `feedback_ingest.yml` reads recent feedback emails and updates:
+- `feedback_ingest.yml` scans recent feedback emails from INBOX/All Mail/Sent and updates:
   - `data/progress/vocabulary_status.json`
   - `data/progress/grammar_status.json`
   - `data/progress/feedback_log.json`
@@ -73,12 +73,13 @@ Optional:
 - `EDGE_TTS_VOICE`
 - `FEEDBACK_STRICT_SENDER` (default `0`)
 - `FEEDBACK_ALLOWED_SENDERS` (only used when strict sender filtering is enabled)
+- `IMAP_FEEDBACK_MAILBOXES` (optional, defaults to `INBOX,[Gmail]/All Mail,[Gmail]/Sent Mail,Sent,Sent Messages`)
 - `DE_RSS_URLS`
 - `TTS_STRICT` (`1` means audio failure will fail the whole job, default `0`)
 
 ## Workflows
 - `daily_news_mail.yml`: daily lesson email (includes `--ingest-feedback` before generation)
-- `feedback_ingest.yml`: feedback ingestion every 30 min
+- `feedback_ingest.yml`: feedback ingestion every 10 min
 - `weekly_report.yml`: weekly statistics report (Sunday UTC)
 
 ## Notes
