@@ -79,7 +79,7 @@ Optional:
 
 ## Workflows
 - `daily_news_mail.yml`: daily lesson email (includes `--ingest-feedback` before generation)
-- `feedback_ingest.yml`: feedback ingestion every 10 min
+- `feedback_ingest.yml`: feedback ingestion (manual trigger only)
 - `weekly_report.yml`: weekly statistics report (Sunday UTC)
 
 ## Notes
