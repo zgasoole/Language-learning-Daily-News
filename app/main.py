@@ -50,7 +50,12 @@ def main() -> None:
 
     if args.ingest_feedback:
         feedback_job = FeedbackJob(settings=settings)
-        feedback_job.run()
+        try:
+            feedback_job.run()
+        except Exception as exc:
+            if settings.feedback_ingest_strict:
+                raise
+            print(f"[WARN] Feedback ingest failed, continue sending lesson email: {exc}")
 
     dry_run = args.dry_run or settings.dry_run
 

@@ -73,12 +73,13 @@ Optional:
 - `EDGE_TTS_VOICE`
 - `FEEDBACK_STRICT_SENDER` (default `0`)
 - `FEEDBACK_ALLOWED_SENDERS` (only used when strict sender filtering is enabled)
+- `FEEDBACK_INGEST_STRICT` (default `0`; when `1`, feedback ingest failure will fail daily workflow)
 - `IMAP_FEEDBACK_MAILBOXES` (optional, defaults to `INBOX,[Gmail]/All Mail,[Gmail]/Sent Mail,Sent,Sent Messages`)
 - `DE_RSS_URLS`
 - `TTS_STRICT` (`1` means audio failure will fail the whole job, default `0`)
 
 ## Workflows
-- `daily_news_mail.yml`: daily lesson email (includes `--ingest-feedback` before generation)
+- `daily_news_mail.yml`: daily lesson email (includes `--ingest-feedback` before generation; feedback ingest failure defaults to warning-only)
 - `feedback_ingest.yml`: feedback ingestion (manual trigger only)
 - `weekly_report.yml`: weekly statistics report (Sunday UTC)
 

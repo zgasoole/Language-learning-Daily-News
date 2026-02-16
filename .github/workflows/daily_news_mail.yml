@@ -44,6 +44,7 @@ jobs:
           FEEDBACK_TOKEN: ${{ secrets.FEEDBACK_TOKEN }}
           FEEDBACK_ALLOWED_SENDERS: ${{ secrets.FEEDBACK_ALLOWED_SENDERS }}
           FEEDBACK_STRICT_SENDER: ${{ secrets.FEEDBACK_STRICT_SENDER || '0' }}
+          FEEDBACK_INGEST_STRICT: ${{ secrets.FEEDBACK_INGEST_STRICT || '0' }}
           IMAP_FEEDBACK_MAILBOXES: ${{ secrets.IMAP_FEEDBACK_MAILBOXES }}
 
           TTS_PROVIDER: ${{ secrets.TTS_PROVIDER || 'edge' }}

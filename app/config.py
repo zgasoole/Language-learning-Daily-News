@@ -66,6 +66,7 @@ class Settings:
     feedback_token: str
     feedback_allowed_senders: List[str]
     feedback_strict_sender: bool
+    feedback_ingest_strict: bool
 
     tts_provider: str
     edge_tts_voice: str
@@ -138,6 +139,7 @@ def load_settings() -> Settings:
         feedback_token=_env_str("FEEDBACK_TOKEN", ""),
         feedback_allowed_senders=allowed_senders,
         feedback_strict_sender=strict_sender,
+        feedback_ingest_strict=_env_bool("FEEDBACK_INGEST_STRICT", False),
         tts_provider=_env_str("TTS_PROVIDER", "edge").lower(),
         edge_tts_voice=_env_str("EDGE_TTS_VOICE", "de-DE-KatjaNeural"),
         tts_strict=_env_bool("TTS_STRICT", False),
