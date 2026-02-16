@@ -45,7 +45,11 @@ class IMAPFeedbackClient:
                 if not self._select_mailbox(client, mailbox):
                     continue
 
-                typ, data = client.search(None, "ALL")
+                try:
+                    typ, data = client.search(None, "ALL")
+                except imaplib.IMAP4.error:
+                    continue
+
                 if typ != "OK" or not data or not data[0]:
                     continue
 
@@ -53,7 +57,11 @@ class IMAPFeedbackClient:
                 msg_ids = msg_ids[-limit:]
 
                 for msg_id in msg_ids:
-                    typ, msg_data = client.fetch(msg_id, "(RFC822)")
+                    try:
+                        typ, msg_data = client.fetch(msg_id, "(RFC822)")
+                    except imaplib.IMAP4.error:
+                        continue
+
                     if typ != "OK" or not msg_data:
                         continue
 
@@ -104,7 +112,10 @@ class IMAPFeedbackClient:
                 if not self._select_mailbox(client, mailbox):
                     continue
                 for msg_id in msg_ids:
-                    client.store(msg_id, "+FLAGS", "\\Seen")
+                    try:
+                        client.store(msg_id, "+FLAGS", "\\Seen")
+                    except imaplib.IMAP4.error:
+                        continue
 
     def _resolve_mailboxes(self) -> List[str]:
         if self.mailboxes:
@@ -124,11 +135,35 @@ class IMAPFeedbackClient:
         return ["INBOX"]
 
     def _select_mailbox(self, client: imaplib.IMAP4_SSL, mailbox: str) -> bool:
-        typ, _ = client.select(f'"{mailbox}"')
-        if typ == "OK":
-            return True
-        typ, _ = client.select(mailbox)
-        return typ == "OK"
+        for candidate in self._mailbox_select_candidates(mailbox):
+            try:
+                typ, _ = client.select(candidate)
+            except imaplib.IMAP4.error:
+                continue
+            if typ == "OK":
+                return True
+        return False
+
+    def _mailbox_select_candidates(self, mailbox: str) -> List[str]:
+        value = mailbox.strip()
+        if not value:
+            return []
+
+        out: List[str] = []
+
+        def _push(item: str) -> None:
+            if item and item not in out:
+                out.append(item)
+
+        _push(value)
+
+        unquoted = value[1:-1].strip() if len(value) >= 2 and value[0] == '"' and value[-1] == '"' else value
+        _push(unquoted)
+
+        escaped = unquoted.replace("\\", "\\\\").replace('"', '\\"')
+        _push(f'"{escaped}"')
+
+        return out
 
     def _extract_text_body(self, msg: Message) -> str:
         if msg.is_multipart():
