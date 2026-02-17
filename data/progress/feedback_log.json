@@ -53,9 +53,76 @@
       "topic": "Satzbau: Subjekt â€“ Verb â€“ Objekt (SVO)",
       "status": "review",
       "sender": "zgasoole@gmail.com"
+    },
+    {
+      "timestamp": "2026-02-17T08:42:02.902435",
+      "type": "word",
+      "lesson_id": "de-20260215",
+      "language": "de",
+      "word": "Regierung",
+      "status": "unknown",
+      "sender": "zgasoole@gmail.com",
+      "mailbox": "INBOX",
+      "message_key": "<734A4165-CCE2-4AE4-B494-B6724859814A@gmail.com>"
+    },
+    {
+      "timestamp": "2026-02-17T08:42:02.902943",
+      "type": "word",
+      "lesson_id": "de-20260215",
+      "language": "de",
+      "word": "wichtig",
+      "status": "unknown",
+      "sender": "zgasoole@gmail.com",
+      "mailbox": "INBOX",
+      "message_key": "<734A4165-CCE2-4AE4-B494-B6724859814A@gmail.com>"
+    },
+    {
+      "timestamp": "2026-02-17T08:42:02.903414",
+      "type": "word",
+      "lesson_id": "de-20260215",
+      "language": "de",
+      "word": "Gefahr",
+      "status": "unknown",
+      "sender": "zgasoole@gmail.com",
+      "mailbox": "INBOX",
+      "message_key": "<734A4165-CCE2-4AE4-B494-B6724859814A@gmail.com>"
+    },
+    {
+      "timestamp": "2026-02-17T08:42:02.903901",
+      "type": "word",
+      "lesson_id": "de-20260215",
+      "language": "de",
+      "word": "schÃ¼tzen",
+      "status": "unknown",
+      "sender": "zgasoole@gmail.com",
+      "mailbox": "INBOX",
+      "message_key": "<734A4165-CCE2-4AE4-B494-B6724859814A@gmail.com>"
+    },
+    {
+      "timestamp": "2026-02-17T08:42:02.904357",
+      "type": "word",
+      "lesson_id": "de-20260215",
+      "language": "de",
+      "word": "Sicherheit",
+      "status": "unknown",
+      "sender": "zgasoole@gmail.com",
+      "mailbox": "INBOX",
+      "message_key": "<734A4165-CCE2-4AE4-B494-B6724859814A@gmail.com>"
+    },
+    {
+      "timestamp": "2026-02-17T08:42:02.904803",
+      "type": "grammar",
+      "lesson_id": "de-20260215",
+      "language": "de",
+      "topic": "Das Verb",
+      "status": "review",
+      "sender": "zgasoole@gmail.com",
+      "mailbox": "INBOX",
+      "message_key": "<734A4165-CCE2-4AE4-B494-B6724859814A@gmail.com>"
     }
   ],
   "processed_message_keys": [
-    "<A2897575-50BA-44A0-9F9D-C3EF141061AE@gmail.com>"
+    "<A2897575-50BA-44A0-9F9D-C3EF141061AE@gmail.com>",
+    "<734A4165-CCE2-4AE4-B494-B6724859814A@gmail.com>"
   ]
 }
