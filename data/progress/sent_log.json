@@ -71,6 +71,15 @@
       "source_urls": [
         "https://www.tagesschau.de/faktenfinder/gasspeicher-notstand-100.html"
       ]
+    },
+    {
+      "lesson_id": "de-20260221",
+      "title": "Angriffe im Libanon: Eine Gefahr für die Sicherheit",
+      "language": "de",
+      "created_at": "2026-02-21T08:25:48.939981",
+      "source_urls": [
+        "https://www.tagesschau.de/ausland/asien/israel-angriffe-libanon-tote-102.html"
+      ]
     }
   ]
 }
