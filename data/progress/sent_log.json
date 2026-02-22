@@ -80,6 +80,15 @@
       "source_urls": [
         "https://www.tagesschau.de/ausland/asien/israel-angriffe-libanon-tote-102.html"
       ]
+    },
+    {
+      "lesson_id": "de-20260222",
+      "title": "Streit um Schuldenbremse in der Regierung",
+      "language": "de",
+      "created_at": "2026-02-22T08:28:22.958775",
+      "source_urls": [
+        "https://www.tagesschau.de/inland/innenpolitik/schuldenbremse-debatte-106.html"
+      ]
     }
   ]
 }
