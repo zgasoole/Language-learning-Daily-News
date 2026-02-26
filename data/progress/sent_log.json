@@ -116,6 +116,15 @@
       "source_urls": [
         "https://www.tagesschau.de/ausland/europa/eta-einreise-grossbritannien-100.html"
       ]
+    },
+    {
+      "lesson_id": "de-20260226",
+      "title": "Nvidia: Viel Geld, aber Sorgen wegen China",
+      "language": "de",
+      "created_at": "2026-02-26T08:39:59.677843",
+      "source_urls": [
+        "https://www.tagesschau.de/wirtschaft/unternehmen/nvidia-rekordzahlen-china-sorgen-ki-hype-100.html"
+      ]
     }
   ]
 }
