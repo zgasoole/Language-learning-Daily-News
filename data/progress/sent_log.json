@@ -143,6 +143,15 @@
       "source_urls": [
         "https://www.tagesschau.de/kultur/deutsche-sprache-beim-esc-vorentscheid-100.html"
       ]
+    },
+    {
+      "lesson_id": "de-20260301",
+      "title": "Erdbeeren aus Ägypten: Klima und Wirtschaft",
+      "language": "de",
+      "created_at": "2026-03-01T08:25:07.926880",
+      "source_urls": [
+        "https://www.tagesschau.de/wirtschaft/weltwirtschaft/erdbeeren-aegypten-100.html"
+      ]
     }
   ]
 }
