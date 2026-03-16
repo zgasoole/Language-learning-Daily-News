@@ -278,6 +278,15 @@
       "source_urls": [
         "https://www.tagesschau.de/inland/innenpolitik/atomkraft-bayern-soeder-csu-wirbt-fuer-mini-akw-100.html"
       ]
+    },
+    {
+      "lesson_id": "de-20260316",
+      "title": "Wahl in Hessen: CDU ist vorn",
+      "language": "de",
+      "created_at": "2026-03-16T08:53:20.254554",
+      "source_urls": [
+        "https://www.tagesschau.de/inland/regional/hessen/hessen-kommunalwahl-100.html"
+      ]
     }
   ]
 }
