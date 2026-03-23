@@ -341,6 +341,15 @@
       "source_urls": [
         "https://www.tagesschau.de/wissen/gesundheit/gesundheit-bewegung-spazieren-100.html"
       ]
+    },
+    {
+      "lesson_id": "de-20260323",
+      "title": "Zugunglück in Griechenland: Prozess beginnt",
+      "language": "de",
+      "created_at": "2026-03-23T08:48:42.632674",
+      "source_urls": [
+        "https://www.tagesschau.de/ausland/europa/prozessauftakt-zugunglueck-griechenland-100.html"
+      ]
     }
   ]
 }
