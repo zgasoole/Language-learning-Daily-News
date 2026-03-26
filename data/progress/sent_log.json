@@ -368,6 +368,15 @@
       "source_urls": [
         "https://www.tagesschau.de/inland/castor-transport-atommuell-nrw-100.html"
       ]
+    },
+    {
+      "lesson_id": "de-20260326",
+      "title": "Krieg, Öl und Nordafrika: Was passiert?",
+      "language": "de",
+      "created_at": "2026-03-26T08:47:33.320834",
+      "source_urls": [
+        "https://www.tagesschau.de/ausland/afrika/iran-krieg-nordafrika-100.html"
+      ]
     }
   ]
 }
