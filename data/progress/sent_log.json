@@ -395,6 +395,15 @@
       "source_urls": [
         "https://www.tagesschau.de/newsticker/liveblog-iran-samstag-104.html"
       ]
+    },
+    {
+      "lesson_id": "de-20260329",
+      "title": "KI und Jobs in Deutschland",
+      "language": "de",
+      "created_at": "2026-03-29T08:34:18.751756",
+      "source_urls": [
+        "https://www.tagesschau.de/inland/innenpolitik/wildberger-ki-jobs-100.html"
+      ]
     }
   ]
 }
