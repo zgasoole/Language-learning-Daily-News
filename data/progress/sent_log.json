@@ -422,6 +422,15 @@
       "source_urls": [
         "https://www.tagesschau.de/wirtschaft/unternehmen/deutsche-bahn-stellwerke-100.html"
       ]
+    },
+    {
+      "lesson_id": "de-20260401",
+      "title": "Hoffnung auf Frieden und der DAX",
+      "language": "de",
+      "created_at": "2026-04-01T08:58:04.543110",
+      "source_urls": [
+        "https://www.tagesschau.de/wirtschaft/finanzen/marktberichte/marktbericht-dax-dow-jones-392.html"
+      ]
     }
   ]
 }
