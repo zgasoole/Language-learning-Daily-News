@@ -55,7 +55,21 @@ jobs:
           JA_RSS_URLS: ${{ secrets.JA_RSS_URLS }}
           AUDIO_PUBLIC_BASE_URL: ${{ secrets.AUDIO_PUBLIC_BASE_URL }}
         run: |
-          python -m app.main --ingest-feedback
+          max_attempts=3
+          for attempt in $(seq 1 "${max_attempts}"); do
+            echo "[workflow] Daily job attempt ${attempt}/${max_attempts}"
+            if python -m app.main --ingest-feedback; then
+              exit 0
+            fi
+
+            if [ "${attempt}" -lt "${max_attempts}" ]; then
+              echo "[workflow] Daily job failed on attempt ${attempt}/${max_attempts}; sleeping 60s before retry"
+              sleep 60
+            fi
+          done
+
+          echo "[workflow] Daily job failed after ${max_attempts} attempts"
+          exit 1
 
       - name: Commit progress snapshots
         run: |
