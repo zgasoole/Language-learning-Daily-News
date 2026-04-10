@@ -494,6 +494,15 @@
       "source_urls": [
         "https://www.tagesschau.de/wirtschaft/finanzen/marktberichte/marktbericht-katerstimmung-100.html"
       ]
+    },
+    {
+      "lesson_id": "de-20260410",
+      "title": "Nachrichten für Deutschlerner",
+      "language": "de",
+      "created_at": "2026-04-10T09:05:00.514862",
+      "source_urls": [
+        "https://www.tagesschau.de/wirtschaft/finanzen/marktberichte/marktbericht-dax-dow-jones-verhandlungen-100.html"
+      ]
     }
   ]
 }
