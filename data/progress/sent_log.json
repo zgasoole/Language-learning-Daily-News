@@ -674,6 +674,15 @@
       "source_urls": [
         "https://www.tagesschau.de/newsticker/liveblog-iran-mittwoch-114.html"
       ]
+    },
+    {
+      "lesson_id": "de-20260430",
+      "title": "Craig Venter: Ein Forscher ist tot",
+      "language": "de",
+      "created_at": "2026-04-30T10:01:27.615190",
+      "source_urls": [
+        "https://www.tagesschau.de/wissen/forschung/craig-venter-tod-100.html"
+      ]
     }
   ]
 }
