@@ -683,6 +683,15 @@
       "source_urls": [
         "https://www.tagesschau.de/wissen/forschung/craig-venter-tod-100.html"
       ]
+    },
+    {
+      "lesson_id": "de-20260501",
+      "title": "Probleme in Griechenland: Regierung und Geld",
+      "language": "de",
+      "created_at": "2026-05-01T09:28:39.531136",
+      "source_urls": [
+        "https://www.tagesschau.de/ausland/europa/griechenland-politik-stimmung-100.html"
+      ]
     }
   ]
 }
