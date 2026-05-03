@@ -701,6 +701,15 @@
       "source_urls": [
         "https://www.tagesschau.de/inland/gesellschaft/maidemo-bilanz-berlin-hamburg-100.html"
       ]
+    },
+    {
+      "lesson_id": "de-20260503",
+      "title": "Nachrichten: Frieden, Soldaten und Gefahr",
+      "language": "de",
+      "created_at": "2026-05-03T09:19:57.091055",
+      "source_urls": [
+        "https://www.tagesschau.de/newsticker/liveblog-nahost-sonntag-290.html"
+      ]
     }
   ]
 }
