@@ -710,6 +710,15 @@
       "source_urls": [
         "https://www.tagesschau.de/newsticker/liveblog-nahost-sonntag-290.html"
       ]
+    },
+    {
+      "lesson_id": "de-20260504",
+      "title": "Drei Parteien verlassen X",
+      "language": "de",
+      "created_at": "2026-05-04T10:12:02.200610",
+      "source_urls": [
+        "https://www.tagesschau.de/inland/spd-gruene-linke-rueckzug-x-100.html"
+      ]
     }
   ]
 }
