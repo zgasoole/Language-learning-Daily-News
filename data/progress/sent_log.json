@@ -719,6 +719,15 @@
       "source_urls": [
         "https://www.tagesschau.de/inland/spd-gruene-linke-rueckzug-x-100.html"
       ]
+    },
+    {
+      "lesson_id": "de-20260505",
+      "title": "Krieg in der Ukraine",
+      "language": "de",
+      "created_at": "2026-05-05T10:00:57.287399",
+      "source_urls": [
+        "https://www.tagesschau.de/ausland/europa/angriff-ukraine-poltawa-100.html"
+      ]
     }
   ]
 }
