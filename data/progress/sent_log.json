@@ -728,6 +728,15 @@
       "source_urls": [
         "https://www.tagesschau.de/ausland/europa/angriff-ukraine-poltawa-100.html"
       ]
+    },
+    {
+      "lesson_id": "de-20260506",
+      "title": "Zoll kontrolliert Pakete",
+      "language": "de",
+      "created_at": "2026-05-06T10:15:22.380299",
+      "source_urls": [
+        "https://www.tagesschau.de/inland/zoll-kontrolle-paketdienste-arbeitsrecht-100.html"
+      ]
     }
   ]
 }
