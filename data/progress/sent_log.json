@@ -791,6 +791,15 @@
       "source_urls": [
         "https://www.tagesschau.de/inland/innenpolitik/merz-buhrufe-100.html"
       ]
+    },
+    {
+      "lesson_id": "de-20260513",
+      "title": "Neues System für Arztbesuche in Deutschland",
+      "language": "de",
+      "created_at": "2026-05-13T10:20:13.653693",
+      "source_urls": [
+        "https://www.tagesschau.de/inland/gesellschaft/hausarzt-facharzt-gesundheitssystem-100.html"
+      ]
     }
   ]
 }
