@@ -899,6 +899,15 @@
       "source_urls": [
         "https://www.tagesschau.de/ausland/europa/kiew-angriffswelle-100.html"
       ]
+    },
+    {
+      "lesson_id": "de-20260525",
+      "title": "Papst warnt vor Künstlicher Intelligenz",
+      "language": "de",
+      "created_at": "2026-05-25T11:47:38.977998",
+      "source_urls": [
+        "https://www.tagesschau.de/ausland/europa/papst-enzyklika-108.html"
+      ]
     }
   ]
 }
