@@ -935,6 +935,15 @@
       "source_urls": [
         "https://www.tagesschau.de/inland/innenpolitik/pflege-reform-100.html"
       ]
+    },
+    {
+      "lesson_id": "de-20260530",
+      "title": "Die Brennerautobahn ist gesperrt",
+      "language": "de",
+      "created_at": "2026-05-30T09:54:15.717267",
+      "source_urls": [
+        "https://www.tagesschau.de/ausland/europa/oesterreich-italien-brenner-sperrung-100.html"
+      ]
     }
   ]
 }
