@@ -1034,6 +1034,15 @@
       "source_urls": [
         "https://www.tagesschau.de/ausland/amerika/usa-vorwahlen-midterms-trump-100.html"
       ]
+    },
+    {
+      "lesson_id": "de-20260610",
+      "title": "Nachrichten: Angriffe und Gespräche",
+      "language": "de",
+      "created_at": "2026-06-10T11:36:32.566188",
+      "source_urls": [
+        "https://www.tagesschau.de/newsticker/liveblog-iran-usa-100.html"
+      ]
     }
   ]
 }
