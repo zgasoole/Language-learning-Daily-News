@@ -1124,6 +1124,15 @@
       "source_urls": [
         "https://www.tagesschau.de/inland/domspatz-klage-schmerzensgeld-100.html"
       ]
+    },
+    {
+      "lesson_id": "de-20260620",
+      "title": "Chemieunfall in NRW: 25 Menschen verletzt",
+      "language": "de",
+      "created_at": "2026-06-20T10:31:05.706426",
+      "source_urls": [
+        "https://www.tagesschau.de/inland/regional/nordrheinwestfalen/chemieunfall-chempark-dormagen-100.html"
+      ]
     }
   ]
 }
