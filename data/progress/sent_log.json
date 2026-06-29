@@ -1205,6 +1205,15 @@
       "source_urls": [
         "https://www.tagesschau.de/inland/innenpolitik/gruene-hitze-klima-100.html"
       ]
+    },
+    {
+      "lesson_id": "de-20260629",
+      "title": "Traurige Nachrichten aus Stade",
+      "language": "de",
+      "created_at": "2026-06-29T12:25:39.082780",
+      "source_urls": [
+        "https://www.tagesschau.de/inland/stade-schuesse-100.html"
+      ]
     }
   ]
 }
