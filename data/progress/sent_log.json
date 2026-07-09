@@ -1295,6 +1295,15 @@
       "source_urls": [
         "https://www.tagesschau.de/newsticker/liveblog-iran-mittwoch-122.html"
       ]
+    },
+    {
+      "lesson_id": "de-20260709",
+      "title": "Berlin: Bürgermeister in der Kritik vor der Wahl",
+      "language": "de",
+      "created_at": "2026-07-09T10:50:21.409239",
+      "source_urls": [
+        "https://www.tagesschau.de/inland/regional/berlin/berlin-wahl-wegner-100.html"
+      ]
     }
   ]
 }
