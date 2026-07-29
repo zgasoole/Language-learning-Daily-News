@@ -1475,6 +1475,15 @@
       "source_urls": [
         "https://www.tagesschau.de/wirtschaft/unternehmen/porsche-sparkurs-100.html"
       ]
+    },
+    {
+      "lesson_id": "de-20260729",
+      "title": "Feuer bei Bordeaux: Helfer im Einsatz",
+      "language": "de",
+      "created_at": "2026-07-29T10:35:43.734671",
+      "source_urls": [
+        "https://www.tagesschau.de/ausland/europa/brand-frankreich-100.html"
+      ]
     }
   ]
 }
