@@ -1484,6 +1484,15 @@
       "source_urls": [
         "https://www.tagesschau.de/ausland/europa/brand-frankreich-100.html"
       ]
+    },
+    {
+      "lesson_id": "de-20260730",
+      "title": "Deutsche Wirtschaft: Kleines Wachstum",
+      "language": "de",
+      "created_at": "2026-07-30T10:17:31.270355",
+      "source_urls": [
+        "https://www.tagesschau.de/wirtschaft/konjunktur/bip-wirtschaftswachstum-deutschland-100.html"
+      ]
     }
   ]
 }
