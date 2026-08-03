@@ -1520,6 +1520,15 @@
       "source_urls": [
         "https://www.tagesschau.de/wirtschaft/verbraucher/kosten-kommunen-unterschiede-100.html"
       ]
+    },
+    {
+      "lesson_id": "de-20260803",
+      "title": "Angriffe auf ein Lager in Russland",
+      "language": "de",
+      "created_at": "2026-08-03T11:17:38.621543",
+      "source_urls": [
+        "https://www.tagesschau.de/ausland/europa/ukraine-russland-angriffe-wildberries-100.html"
+      ]
     }
   ]
 }
