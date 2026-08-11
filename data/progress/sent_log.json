@@ -1592,6 +1592,15 @@
       "source_urls": [
         "https://www.tagesschau.de/wirtschaft/finanzen/marktberichte/marktbericht-dax-dow-jones-oelpreise-iran-100.html"
       ]
+    },
+    {
+      "lesson_id": "de-20260811",
+      "title": "Nachrichten: DAX, Öl und Rhein",
+      "language": "de",
+      "created_at": "2026-08-11T08:46:21.141269",
+      "source_urls": [
+        "https://www.tagesschau.de/wirtschaft/finanzen/marktberichte/marktbericht-dax-dow-jones-brent-100.html"
+      ]
     }
   ]
 }
