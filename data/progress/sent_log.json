@@ -1763,6 +1763,15 @@
       "source_urls": [
         "https://www.tagesschau.de/ausland/schiefe-turm-wehrturm-michalovice-tschechien-100.html"
       ]
+    },
+    {
+      "lesson_id": "de-20260830",
+      "title": "Passagierschiff gekentert: Rettung vor Zypern",
+      "language": "de",
+      "created_at": "2026-08-30T13:28:58.155477",
+      "source_urls": [
+        "https://www.tagesschau.de/ausland/europa/zypern-faehre-seenot-102.html"
+      ]
     }
   ]
 }
