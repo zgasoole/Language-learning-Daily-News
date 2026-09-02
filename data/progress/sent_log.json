@@ -1790,6 +1790,15 @@
       "source_urls": [
         "https://www.tagesschau.de/wirtschaft/finanzen/marktbericht-kursverluste-gruende-100.html"
       ]
+    },
+    {
+      "lesson_id": "de-20260902",
+      "title": "Angriff am Flughafen Leipzig",
+      "language": "de",
+      "created_at": "2026-09-02T12:26:28.262445",
+      "source_urls": [
+        "https://www.tagesschau.de/investigativ/ndr-wdr/leipzig-drohne-russland-100.html"
+      ]
     }
   ]
 }
