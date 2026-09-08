@@ -1844,6 +1844,15 @@
       "source_urls": [
         "https://www.tagesschau.de/inland/innenpolitik/sachsen-anhalt-zahlen-rekorde-100.html"
       ]
+    },
+    {
+      "lesson_id": "de-20260908",
+      "title": "Deutschlands Elektroindustrie: Gute Nachrichten",
+      "language": "de",
+      "created_at": "2026-09-08T12:27:56.606064",
+      "source_urls": [
+        "https://www.tagesschau.de/wirtschaft/finanzen/marktbericht-elektroindustrie-ifo-100.html"
+      ]
     }
   ]
 }
