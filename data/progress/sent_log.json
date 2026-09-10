@@ -1862,6 +1862,15 @@
       "source_urls": [
         "https://www.tagesschau.de/inland/innenpolitik/afd-sachsen-anhalt-regierungsbildung-100.html"
       ]
+    },
+    {
+      "lesson_id": "de-20260910",
+      "title": "Preise steigen, Zinsen auch",
+      "language": "de",
+      "created_at": "2026-09-10T12:35:46.961641",
+      "source_urls": [
+        "https://www.tagesschau.de/ezb-zinsen-114.html"
+      ]
     }
   ]
 }
